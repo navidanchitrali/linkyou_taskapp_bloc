@@ -65,8 +65,28 @@ Using GoRouter for declarative routing with:
 2. Run `flutter pub get`
 3. Run `flutter run`
 
-## Testing
+## Screenshots
 
-Run tests with:
-```bash
-flutter test
+
+<img width="341" height="695" alt="image" src="https://github.com/user-attachments/assets/998e66f1-9074-40ab-b515-0dc5dcb16cfd" />
+
+
+
+
+<img width="334" height="703" alt="image" src="https://github.com/user-attachments/assets/8cf1fb64-c5da-4952-8cdf-c765065f4f87" />
+
+
+<img width="346" height="696" alt="image" src="https://github.com/user-attachments/assets/4df8db09-5346-4c50-91a4-ddc016992b63" />
+
+
+<img width="343" height="536" alt="image" src="https://github.com/user-attachments/assets/b94c4c57-fb50-4d00-b472-d649bced7ffe" />
+
+
+
+<img width="339" height="704" alt="image" src="https://github.com/user-attachments/assets/c06b0896-5dc7-4549-8714-ef6cf41c635b" />
+
+
+
+
+
+ 
