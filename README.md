@@ -39,7 +39,7 @@ The project follows Clean Architecture with clear separation of concerns:
 Using BLoC pattern with:
 - `SessionBloc` for authentication state
 - `TaskListBloc` for task listing with pagination
-- `TaskCrudBloc` for task create/update/delete operations
+ 
 
 ## Navigation
 

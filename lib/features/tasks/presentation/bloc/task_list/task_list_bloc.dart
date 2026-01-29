@@ -21,6 +21,7 @@ class TaskListBloc extends Bloc<TaskListEvent, TaskListState> {
     on<DeleteTaskFromList>(_onDeleteTaskFromList);
     on<AddTaskToList>(_onAddTaskToList);
     on<UpdateTaskInList>(_onUpdateTaskInList);
+     on<EditTaskInList>(_onEditTaskInList);
   }
 
   Future<void> _onLoadTasks(
@@ -120,6 +121,42 @@ class TaskListBloc extends Bloc<TaskListEvent, TaskListState> {
       }
     }
   }
+
+  
+  Future<void> _onEditTaskInList(EditTaskInList event, Emitter<TaskListState> emit) async {
+    if (state is TaskListLoaded) {
+      final currentState = state as TaskListLoaded;
+      
+      try {
+        // Find the task to update
+        final taskToUpdate = currentState.tasks.firstWhere((task) => task.id == event.taskId);
+        
+        // Create updated task
+        final updatedTask = taskToUpdate.copyWith(
+          todo: event.newTodo,
+          updatedAt: DateTime.now(),
+        );
+        
+        // Update in repository
+        await taskRepository.updateTask(updatedTask);
+        
+        // Update in local list
+        final updatedTasks = currentState.tasks.map((task) {
+          return task.id == event.taskId ? updatedTask : task;
+        }).toList();
+        
+        _loadedTasks = updatedTasks;
+        
+        emit(TaskListLoaded(
+          tasks: updatedTasks,
+          hasMore: currentState.hasMore,
+          totalTasks: currentState.totalTasks,
+        ));
+      } catch (e) {
+        emit(TaskListError(message: 'Failed to edit task'));
+        emit(currentState);
+      }
+    }}
 
   Future<void> _onRefreshTasks(
     RefreshTasks event,

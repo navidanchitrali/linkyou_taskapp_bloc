@@ -49,4 +49,6 @@ class User {
       'accessToken': token,  
     };
   }
+
+  copyWith({required String firstName, required String lastName, required String token}) {}
 }

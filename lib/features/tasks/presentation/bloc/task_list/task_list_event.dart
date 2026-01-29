@@ -54,3 +54,13 @@ class UpdateTaskInList extends TaskListEvent {
 }
 
 class ClearAllTasks extends TaskListEvent {}
+
+class EditTaskInList extends TaskListEvent {
+  final String taskId;
+  final String newTodo;
+
+  EditTaskInList({required this.taskId, required this.newTodo});
+
+  @override
+  List<Object> get props => [taskId, newTodo];
+}

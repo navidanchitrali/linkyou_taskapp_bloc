@@ -179,20 +179,20 @@ class TaskRepositoryImpl implements TaskRepository {
     return task;
   }
 
-  @override
-  Future<Task> updateTask(Task task) async {
-    final updatedTask = task.copyWith(
-      updatedAt: DateTime.now(),
-    );
-    
-    final List<Task> cachedTasks = await getCachedTasks();
-    final List<Task> updatedTasks = cachedTasks.map((t) => 
-        t.id == task.id ? updatedTask : t).toList();
-    
-    await cacheTasks(updatedTasks);
-    
-    return updatedTask;
-  }
+@override
+Future<Task> updateTask(Task task) async {
+  final updatedTask = task.copyWith(
+    updatedAt: DateTime.now(),
+  );
+  
+  final List<Task> cachedTasks = await getCachedTasks();
+  final List<Task> updatedTasks = cachedTasks.map((t) => 
+      t.id == task.id ? updatedTask : t).toList();
+  
+  await cacheTasks(updatedTasks);
+  
+  return updatedTask;
+}
 
   @override
   Future<void> deleteTask(String id) async {

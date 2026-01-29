@@ -76,11 +76,13 @@ class _TaskListScreenState extends State<TaskListScreen> {
             });
           }
         },
-        child: Scaffold(
-          backgroundColor: _getBackgroundColor(context),
-          appBar: _buildAppBar(),
-          body: _buildBody(),
-          floatingActionButton: _buildFloatingActionButton(),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: _getBackgroundColor(context),
+            appBar: _buildAppBar(),
+            body: _buildBody(),
+            floatingActionButton: _buildFloatingActionButton(),
+          ),
         ),
       ),
     );
@@ -458,6 +460,8 @@ Widget _buildTaskMenu(Task task) {
 }
 
 void _showEditTaskDialog(Task task) {
+  final TextEditingController todoController = TextEditingController(text: task.todo);
+  
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -476,7 +480,7 @@ void _showEditTaskDialog(Task task) {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            controller: TextEditingController(text: task.todo),
+            controller: todoController,
             decoration: InputDecoration(
               filled: true,
               fillColor: _getBackgroundColor(context),
@@ -493,39 +497,49 @@ void _showEditTaskDialog(Task task) {
               color: _getTextPrimaryColor(context),
             ),
             maxLines: 3,
-          ),
-          SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    // TODO: Implement task update logic
-                    // _taskListBloc.add(UpdateTaskInList(task: updatedTask));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'Save Changes',
-                    style: AppTextStyles.buttonMedium,
-                  ),
-                ),
-              ),
-            ],
+            autofocus: true,
           ),
         ],
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          style: TextButton.styleFrom(
+            foregroundColor: _getTextSecondaryColor(context),
+          ),
+          child: Text('Cancel', style: AppTextStyles.bodyMedium),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final newTodo = todoController.text.trim();
+            if (newTodo.isNotEmpty && newTodo != task.todo) {
+              Navigator.of(context).pop();
+              _taskListBloc.add(EditTaskInList(
+                taskId: task.id,
+                newTodo: newTodo,
+              ));
+            } else if (newTodo.isEmpty) {
+              // Show error for empty todo
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Task description cannot be empty'),
+                  backgroundColor: AppColors.danger,
+                ),
+              );
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+          ),
+          child: Text('Save', style: AppTextStyles.buttonMedium),
+        ),
+      ],
     ),
   );
 }
-
 void _showDeleteConfirmationDialog(Task task) {
   showDialog(
     context: context,
