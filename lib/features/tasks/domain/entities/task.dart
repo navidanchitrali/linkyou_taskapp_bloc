@@ -24,31 +24,58 @@ class Task {
   }) : createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();  
 
-  Task copyWith({
-    String? id,
-    String? todo,
-    bool? completed,
-    int? userId,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? serverId,
-    bool? isLocal,
-    bool? isSynced,
-    bool? isDeleted,
-  }) {
-    return Task(
-      id: id ?? this.id,
-      todo: todo ?? this.todo,
-      completed: completed ?? this.completed,
-      userId: userId ?? this.userId,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? DateTime.now(),  
-      serverId: serverId ?? this.serverId,
-      isLocal: isLocal ?? this.isLocal,
-      isSynced: isSynced ?? this.isSynced,
-      isDeleted: isDeleted ?? this.isDeleted,
-    );
-  }
+
+       Task copyWith({
+  String? id,
+  String? todo,
+  bool? completed,
+  int? userId,
+  DateTime? createdAt,
+  DateTime? updatedAt,
+  String? serverId,
+  bool? isLocal,
+  bool? isSynced,
+  bool? isDeleted,
+}) {
+  return Task(
+    id: id ?? this.id,
+    todo: todo ?? this.todo,
+    completed: completed ?? this.completed,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? DateTime.now(),  // <-- This is important!
+    serverId: serverId ?? this.serverId,
+    isLocal: isLocal ?? this.isLocal,
+    isSynced: isSynced ?? this.isSynced,
+    isDeleted: isDeleted ?? this.isDeleted,
+  );
+}
+
+  //Task copyWith({
+  //   String? id,
+  //   String? todo,
+  //   bool? completed,
+  //   int? userId,
+  //   DateTime? createdAt,
+  //   DateTime? updatedAt,
+  //   String? serverId,
+  //   bool? isLocal,
+  //   bool? isSynced,
+  //   bool? isDeleted,
+  // }) {
+  //   return Task(
+  //     id: id ?? this.id,
+  //     todo: todo ?? this.todo,
+  //     completed: completed ?? this.completed,
+  //     userId: userId ?? this.userId,
+  //     createdAt: createdAt ?? this.createdAt,
+  //     updatedAt: updatedAt ?? DateTime.now(),  
+  //     serverId: serverId ?? this.serverId,
+  //     isLocal: isLocal ?? this.isLocal,
+  //     isSynced: isSynced ?? this.isSynced,
+  //     isDeleted: isDeleted ?? this.isDeleted,
+  //   );
+  // }
 
  
 

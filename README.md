@@ -47,6 +47,19 @@ Using GoRouter for declarative routing with:
 - Route protection
 - Deep linking support
 - Named routes
+
+
+
+
+
+
+
+
+
+
+
+
+
 - Smooth transitions
 
 ## Dependencies

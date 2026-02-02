@@ -76,8 +76,9 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     await secureStorage.write(key: _userDataKey, value: userJson);
   }
 
-  @override
-  Future<User?> getUser() async {
+@override
+Future<User?> getUser() async {
+  try {
     final userJson = await secureStorage.read(key: _userDataKey);
     
     if (userJson != null) {
@@ -101,9 +102,54 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
         );
       }
     }
+  } catch (e) {
+    // Handle JSON decoding errors or any other errors
+    // Log the error if you have logging set up
+    // print('Error getting user from storage: $e');
     
-    return null;
+    // Clear invalid data to prevent future errors
+    await secureStorage.delete(key: _userDataKey);
+    await secureStorage.delete(key: _accessTokenKey);
+    await secureStorage.delete(key: _refreshTokenKey);
   }
+  
+  return null;
+}
+
+
+
+
+
+
+// working but commented to avoid issues in tests
+  // @override
+  // Future<User?> getUser() async {
+  //   final userJson = await secureStorage.read(key: _userDataKey);
+    
+  //   if (userJson != null) {
+  //     final userMap = json.decode(userJson) as Map<String, dynamic>;
+      
+  //     final token = await getToken();
+      
+  //     if (token != null && token.isNotEmpty) {
+  //       final refreshToken = await getRefreshToken();
+        
+  //       return User(
+  //         id: userMap['id']?.toString() ?? '0',
+  //         username: userMap['username']?.toString() ?? '',
+  //         email: userMap['email']?.toString() ?? '',
+  //         firstName: userMap['firstName']?.toString() ?? '',
+  //         lastName: userMap['lastName']?.toString() ?? '',
+  //         gender: userMap['gender']?.toString() ?? '',
+  //         image: userMap['image']?.toString() ?? '',
+  //         token: token,
+  //         refreshToken: refreshToken,
+  //       );
+  //     }
+  //   }
+    
+  //   return null;
+  // }
 
   @override
   Future<void> clear() async {

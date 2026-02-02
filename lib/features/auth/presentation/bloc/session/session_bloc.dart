@@ -41,21 +41,45 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     }
   }
 
-  Future<void> _onLoginRequested(
-    LoginRequested event,
-    Emitter<SessionState> emit,
-  ) async {
-    emit(SessionLoading());
-    try {
-      final user = await authRepository.login(
-        event.username,
-        event.password,
-      );
-      emit(SessionAuthenticated(user: user));
-    } catch (e) {
-      emit(SessionError(message: 'Login failed: ${e.toString()}'));
-    }
+  String _formatError(dynamic error) {
+  if (error is Exception) {
+    return error.toString().replaceFirst('Exception: ', '');
   }
+  return error.toString();
+}
+
+// Then use it:
+Future<void> _onLoginRequested(
+  LoginRequested event,
+  Emitter<SessionState> emit,
+) async {
+  emit(SessionLoading());
+  try {
+    final user = await authRepository.login(
+      event.username,
+      event.password,
+    );
+    emit(SessionAuthenticated(user: user));
+  } catch (e) {
+    emit(SessionError(message: 'Login failed: ${_formatError(e)}'));
+  }
+}
+
+  // Future<void> _onLoginRequested(
+  //   LoginRequested event,
+  //   Emitter<SessionState> emit,
+  // ) async {
+  //   emit(SessionLoading());
+  //   try {
+  //     final user = await authRepository.login(
+  //       event.username,
+  //       event.password,
+  //     );
+  //     emit(SessionAuthenticated(user: user));
+  //   } catch (e) {
+  //     emit(SessionError(message: 'Login failed: ${e.toString()}'));
+  //   }
+  // }
 
   Future<void> _onLogoutRequested(
     LogoutRequested event,
@@ -70,3 +94,9 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     }
   }
 }
+
+
+
+
+
+
